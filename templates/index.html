@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ML API</title>
+  </head>
+  <body>
+    <h1>Test the ML Model API</h1>
+    <form id="predictForm">
+      <input
+        type="text"
+        name="features"
+        placeholder="Enter features separated by commas"
+      />
+      <button type="submit">Predict</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+      document.getElementById("predictForm").onsubmit = async function (e) {
+        e.preventDefault();
+        const features = this.features.value.split(",").map(Number);
+
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ features }),
+        });
+        const data = await response.json();
+        document.getElementById("result").innerText =
+          "Prediction: " + data.prediction;
+      };
+    </script>
+  </body>
+</html>
